@@ -3,9 +3,7 @@ from typing import Tuple
 from joblib import dump
 from numpy import ndarray
 from sklearn import datasets
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.ensemble import RandomForestClassifier
 
 
 def load_data() -> Tuple[ndarray, ndarray]:
@@ -18,31 +16,30 @@ def load_data() -> Tuple[ndarray, ndarray]:
     return datasets.load_iris(return_X_y=True)
 
 
-def create_pipeline() -> Pipeline:
+def create_model() -> RandomForestClassifier:
     """
-    Cria um pipeline de processamento com escalonamento MinMax e um classificador Gradient Boosting.
+    Cria um modelo Random Forest Classifier.
 
     Returns:
-        Pipeline: Um pipeline do sklearn com pré-processamento e classificador.
+        RandomForestClassifier: Um modelo Random Forest configurado.
     """
-    clf_pipeline = [("scaling", MinMaxScaler()), ("clf", GradientBoostingClassifier())]
-    return Pipeline(clf_pipeline)
+    return RandomForestClassifier(n_estimators=100, random_state=42)
 
 
 def train_and_save_model(X: ndarray, y: ndarray, file_path: str) -> None:
     """
-    Treina um modelo de classificação usando o pipeline definido e salva o modelo treinado.
+    Treina um modelo de classificação Random Forest e salva o modelo treinado.
 
     Args:
         X (ndarray): Atributos de treinamento.
         y (ndarray): Alvos de treinamento.
         file_path (str): Caminho para salvar o modelo treinado.
     """
-    pipeline = create_pipeline()
-    pipeline.fit(X, y)
-    dump(pipeline, file_path)
+    model = create_model()
+    model.fit(X, y)
+    dump(model, file_path)
 
 
 if __name__ == "__main__":
     X, y = load_data()
-    train_and_save_model(X, y, "./ml/iris_dt_v1.joblib")
+    train_and_save_model(X, y, "./ml/iris_rf_v1.joblib")
