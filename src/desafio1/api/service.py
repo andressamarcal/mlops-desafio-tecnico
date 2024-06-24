@@ -1,7 +1,7 @@
 from typing import List, Tuple
 
 import joblib
-from desafio1.app.models import IrisModel
+from desafio1.api.models import IrisModel
 from sklearn.ensemble import RandomForestClassifier
 
 
