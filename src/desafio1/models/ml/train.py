@@ -14,7 +14,7 @@ Explicando o por quê da escolha da Regressão Logística para o projeto:
 3. Bem rápida e, novamente, extremante eficiente (principalmente em cenários de score de crédito =D)
 4. Treinamento e previsão rápidos, mesmo com grandes conjuntos de dados.
 5. Algoritmo bom para dados lineares, ou seja, funciona bem quando há uma relação linear entre as features e a variável alvo/target. :)
-O unico ponto que ressalto, é o fato dele nem sempreo capturar complexidade, acaba sendo menos eficaz em capturar relações não lineares complexas entre as features.
+>> O unico ponto que ressalto, é o fato dele nem sempreo capturar complexidade, acaba sendo menos eficaz em capturar relações não lineares complexas entre as features.
 """
 
 
