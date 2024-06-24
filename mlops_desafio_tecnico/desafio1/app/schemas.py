@@ -3,7 +3,7 @@ from typing import List
 from pydantic import BaseModel
 
 
-class IrisPredictionResponse(BaseModel):
+class IrisPredictionResponseSchema(BaseModel):
     """Schema para a resposta da previsão.
 
     Attributes:

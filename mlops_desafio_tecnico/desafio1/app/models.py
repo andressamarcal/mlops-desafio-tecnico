@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class Iris(BaseModel):
+class IrisModel(BaseModel):
     """Schema para os dados de entrada do Iris.
 
     Attributes:
