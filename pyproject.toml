@@ -9,11 +9,12 @@ readme = "README.md"
 packages = [{ include = "mlops_desafio_tecnico" }]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<=3.12"
+python = ">=3.11,<3.12"
 fastapi = "^0.111.0"
 joblib = "^1.4.2"
 scikit-learn = "^1.1.2"
 numpy = "^1.23.3"
+matplotlib = "^3.9.0"
 uvicorn = "^0.20.0"
 
 [tool.poetry.group.dev.dependencies]
