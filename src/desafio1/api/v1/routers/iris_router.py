@@ -53,7 +53,6 @@ async def get_prediction(request: IrisPredictionRequest, req: Request):
         prediction = model.predict(data)[0]
         probability = max(model.predict_proba(data)[0])
         return IrisPredictionResponse(prediction=prediction, probability=probability)
-    # especificar exceções mais detalhadas se torna melhor p/ compreensão dos logs e auditoria.
     except ValueError as e:
         raise HTTPException(status_code=400, detail=f"Erro de valor: {e}") from e
     except Exception as e:

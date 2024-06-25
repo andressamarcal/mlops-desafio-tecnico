@@ -2,7 +2,7 @@
 install: ## Install the poetry environment and install the pre-commit hooks
 	@echo "🚀 Creating virtual environment using pyenv and poetry"
 	@poetry install
-	@ poetry run pre-commit install
+	@poetry run pre-commit install
 	@poetry shell
 
 .PHONY: check
@@ -27,11 +27,11 @@ build: clean-build ## Build wheel file using poetry
 	@poetry build
 
 .PHONY: clean-build
-clean-build: ## clean build artifacts
+clean-build: ## Clean build artifacts
 	@rm -rf dist
 
 .PHONY: publish
-publish: ## publish a release to pypi.
+publish: ## Publish a release to PyPI.
 	@echo "🚀 Publishing: Dry run."
 	@poetry config pypi-token.pypi $(PYPI_TOKEN)
 	@poetry publish --dry-run

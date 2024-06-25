@@ -1,14 +1,13 @@
 import pandas as pd
+from sklearn import datasets
 
 
-def load_iris_data(file_path: str):
+def download_iris_dataset() -> pd.DataFrame:
     """
-    Carrega os dados do dataset Íris de um arquivo CSV.
-
-    Args:
-        file_path (str): Caminho para o arquivo CSV contendo o dataset Íris.
+    Faz o download do dataset Íris e retorna um DataFrame do pandas.
 
     Returns:
-        pd.DataFrame: Um DataFrame contendo os dados carregados.
+        pd.DataFrame: DataFrame contendo o dataset Íris.
     """
-    return pd.read_csv(file_path)
+    iris = datasets.load_iris(as_frame=True)
+    return iris.frame
