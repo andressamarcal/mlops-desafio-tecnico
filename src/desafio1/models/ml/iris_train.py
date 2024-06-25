@@ -1,29 +1,21 @@
-"""
-Explicando o por quê da escolha da Regressão Logística para o projeto:
-1. Algoritmo extremamente otimizado e simples para explicação(interpratabilidade do modelo), ou seja, bem menos caixa preta.
-2. Novamente, tem uma tnterpretação bem simples. Seus coeficientes da regressão logística são interpretáveis e oferecem insights diretos sobre a importância das features(feature importance).
-3. Bem rápida e, novamente, extremante eficiente (principalmente em cenários de score de crédito =D)
-4. Treinamento e previsão rápidos, mesmo com grandes conjuntos de dados.
-5. Algoritmo bom para dados lineares, ou seja, funciona bem quando há uma relação linear entre as features e a variável alvo/target. :)
-
-Feature Engineering:
-    Para esse dataset do Íris, escolhi aplicar a padronização (Standardization), que basicamente, é uma técnica de normalização dos dados.
-    Essa técnica transforma os dados para que tenham média zero e desvio padrão igual a um, o que pode melhorar a performance
-    dos modelos de machine learning, como é o caso da Regressao Logistica que é baseada em distâncias.
-
->> O unico ponto que ressalto, é o fato dele nem sempreo capturar complexidade, acaba sendo menos eficaz em capturar relações não lineares complexas entre as features.
-"""
-
+import os
+from collections import Counter
+from datetime import datetime
 from typing import Tuple
 
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
 from joblib import dump
 from numpy import ndarray
 from sklearn import datasets
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+from sklearn.metrics import accuracy_score, auc, confusion_matrix, f1_score, precision_score, recall_score, roc_curve
 from sklearn.model_selection import train_test_split
+from sklearn.multiclass import OneVsRestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+from tqdm import tqdm
 
 
 class IrisModelTrainer:
@@ -31,7 +23,12 @@ class IrisModelTrainer:
         """
         Inicializa a classe IrisModelTrainer com um pipeline de padronização e regressão logística.
         """
-        self.pipeline = Pipeline([("scaler", StandardScaler()), ("classifier", LogisticRegression(max_iter=200))])
+        self.pipeline = Pipeline(
+            [
+                ("scaler", StandardScaler()),
+                ("classifier", OneVsRestClassifier(LogisticRegression(max_iter=200))),
+            ]
+        )
 
     def load_data(self) -> Tuple[ndarray, ndarray]:
         """
@@ -53,9 +50,151 @@ class IrisModelTrainer:
         Returns:
             Tuple[ndarray, ndarray, ndarray, ndarray]: Conjuntos de dados divididos em treinamento e teste.
         """
-        return train_test_split(X, y, test_size=0.2, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        return X_train, X_test, y_train, y_test
 
-    def evaluate_model(self, model: Pipeline, X_test: ndarray, y_test: ndarray) -> None:
+    def plot_distribution(self, y_train: ndarray, y_test: ndarray, plot_path: str) -> None:
+        """
+        Plota a distribuição das classes nos conjuntos de treinamento e teste.
+
+        Args:
+            y_train (ndarray): Alvos do conjunto de treinamento.
+            y_test (ndarray): Alvos do conjunto de teste.
+            plot_path (str): Caminho para salvar os gráficos.
+        """
+        fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+
+        train_counts = Counter(y_train)
+        test_counts = Counter(y_test)
+
+        ax[0].bar(train_counts.keys(), train_counts.values(), color="blue")
+        ax[0].set_title("Distribuição no Conjunto de Treinamento")
+        ax[0].set_xlabel("Classes")
+        ax[0].set_ylabel("Contagem")
+
+        ax[1].bar(test_counts.keys(), test_counts.values(), color="green")
+        ax[1].set_title("Distribuição no Conjunto de Teste")
+        ax[1].set_xlabel("Classes")
+        ax[1].set_ylabel("Contagem")
+
+        plt.savefig(os.path.join(plot_path, "class_distribution.png"))
+        plt.close()
+
+    def plot_metrics(self, y_test: ndarray, y_pred: ndarray, plot_path: str) -> None:
+        """
+        Plota as métricas do modelo e salva os gráficos.
+
+        Args:
+            y_test (ndarray): Alvos/Targets de teste.
+            y_pred (ndarray): Predições do modelo.
+            plot_path (str): Caminho para salvar os gráficos.
+        """
+        metrics = {
+            "accuracy": accuracy_score(y_test, y_pred),
+            "precision": precision_score(y_test, y_pred, average="macro"),
+            "recall": recall_score(y_test, y_pred, average="macro"),
+            "f1_score": f1_score(y_test, y_pred, average="macro"),
+        }
+
+        fig, ax = plt.subplots()
+        ax.plot(metrics.keys(), metrics.values(), marker="o", linestyle="-")
+        ax.set_title("Model Metrics")
+        ax.set_ylim(0, 1)
+        for i, v in enumerate(metrics.values()):
+            ax.text(i, v + 0.01, f"{v:.2f}", ha="center")
+
+        plt.savefig(os.path.join(plot_path, "model_metrics.png"))
+        plt.close()
+
+    def plot_confusion_matrix(self, y_test: ndarray, y_pred: ndarray, plot_path: str) -> None:
+        """
+        Plota a matriz de confusão e salva o gráfico.
+
+        Args:
+            y_test (ndarray): Alvos/Targets de teste.
+            y_pred (ndarray): Predições do modelo.
+            plot_path (str): Caminho para salvar os gráficos.
+        """
+        cm = confusion_matrix(y_test, y_pred)
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
+        plt.xlabel("Predicted")
+        plt.ylabel("True")
+        plt.title("Confusion Matrix")
+        plt.savefig(os.path.join(plot_path, "confusion_matrix.png"))
+        plt.close()
+
+    def plot_roc_curve(self, y_test: ndarray, y_proba: ndarray, plot_path: str) -> None:
+        """
+        Plota a curva ROC e salva o gráfico.
+
+        Args:
+            y_test (ndarray): Alvos/Targets de teste.
+            y_proba (ndarray): Probabilidades preditas pelo modelo.
+            plot_path (str): Caminho para salvar os gráficos.
+        """
+        fpr = {}
+        tpr = {}
+        roc_auc = {}
+
+        for i in range(len(np.unique(y_test))):
+            fpr[i], tpr[i], _ = roc_curve(y_test == i, y_proba[:, i])
+            roc_auc[i] = auc(fpr[i], tpr[i])
+
+        plt.figure(figsize=(8, 6))
+        for i in range(len(np.unique(y_test))):
+            plt.plot(fpr[i], tpr[i], label=f"ROC curve (area = {roc_auc[i]:.2f}) for label {i}")
+        plt.plot([0, 1], [0, 1], color="navy", lw=2, linestyle="--")
+        plt.xlim([0.0, 1.0])
+        plt.ylim([0.0, 1.05])
+        plt.xlabel("False Positive Rate")
+        plt.ylabel("True Positive Rate")
+        plt.title("Receiver Operating Characteristic")
+        plt.legend(loc="lower right")
+        plt.savefig(os.path.join(plot_path, "roc_curve.png"))
+        plt.close()
+
+    def plot_feature_importance(self, model: Pipeline, plot_path: str) -> None:
+        """
+        Plota a importância das features e salva o gráfico.
+
+        Args:
+            model (Pipeline): Modelo treinado.
+            plot_path (str): Caminho para salvar os gráficos.
+        """
+        importances = model.named_steps["classifier"].estimators_[0].coef_[0]
+        feature_names = ["Comprimento Sépala", "Largura Sépala", "Comprimento Pétala", "Largura Pétala"]
+
+        plt.figure(figsize=(10, 6))
+        plt.bar(feature_names, importances, color="blue")
+        plt.xlabel("Features")
+        plt.ylabel("Importance")
+        plt.title("Feature Importance")
+        plt.savefig(os.path.join(plot_path, "feature_importance.png"))
+        plt.close()
+
+    def plot_dataset_info(self, X: ndarray, plot_path: str) -> None:
+        """
+        Plota informações básicas sobre o dataset.
+
+        Args:
+            X (ndarray): Atributos do dataset.
+            plot_path (str): Caminho para salvar os gráficos.
+        """
+        fig, ax = plt.subplots(2, 2, figsize=(12, 10))
+
+        feature_names = ["Comprimento Sépala", "Largura Sépala", "Comprimento Pétala", "Largura Pétala"]
+        for i in range(4):
+            ax[i // 2, i % 2].hist(X[:, i], bins=20, color="blue", alpha=0.7)
+            ax[i // 2, i % 2].set_title(f"Distribuição de {feature_names[i]}")
+            ax[i // 2, i % 2].set_xlabel(feature_names[i])
+            ax[i // 2, i % 2].set_ylabel("Frequência")
+
+        plt.tight_layout()
+        plt.savefig(os.path.join(plot_path, "dataset_info.png"))
+        plt.close()
+
+    def evaluate_model(self, model: Pipeline, X_test: ndarray, y_test: ndarray, plot_path: str) -> None:
         """
         Avalia o modelo usando as métricas precisão, recall e f1-score.
 
@@ -63,8 +202,11 @@ class IrisModelTrainer:
             model (Pipeline): Modelo treinado.
             X_test (ndarray): Atributos de teste.
             y_test (ndarray): Alvos/Targets de teste.
+            plot_path (str): Caminho para salvar os gráficos de métricas.
         """
         y_pred = model.predict(X_test)
+        y_proba = model.predict_proba(X_test)
+
         accuracy = accuracy_score(y_test, y_pred)
         precision = precision_score(y_test, y_pred, average="macro")
         recall = recall_score(y_test, y_pred, average="macro")
@@ -74,6 +216,11 @@ class IrisModelTrainer:
         print(f"Precision: {precision:.2f}")
         print(f"Recall: {recall:.2f}")
         print(f"F1-Score: {f1:.2f}")
+
+        self.plot_metrics(y_test, y_pred, plot_path)
+        self.plot_confusion_matrix(y_test, y_pred, plot_path)
+        self.plot_roc_curve(y_test, y_proba, plot_path)
+        self.plot_feature_importance(model, plot_path)
 
     def train_model(self, X_train: ndarray, y_train: ndarray) -> Pipeline:
         """
@@ -97,23 +244,46 @@ class IrisModelTrainer:
             model (Pipeline): Modelo treinado.
             file_path (str): Caminho para salvar o modelo treinado.
         """
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
         dump(model, file_path)
+        print(f"Modelo salvo como: {file_path}")
 
-    def run(self, file_path: str) -> None:
+    def run(self, file_path: str, plot_path: str) -> None:
         """
         Executa o processo completo de carregamento dos dados, divisão dos dados, treinamento,
         avaliação e salvamento do modelo.
 
         Args:
             file_path (str): Caminho para salvar o modelo treinado.
+            plot_path (str): Caminho para salvar os gráficos de métricas.
         """
-        X, y = self.load_data()
-        X_train, X_test, y_train, y_test = self.split_data(X, y)
-        model = self.train_model(X_train, y_train)
-        self.evaluate_model(model, X_test, y_test)
-        self.save_model(model, file_path)
+        steps = 10
+        with tqdm(total=100, desc="Treinamento do Modelo", unit="step") as pbar:
+            X, y = self.load_data()
+            self.plot_dataset_info(X, plot_path)
+            pbar.update(steps)
+
+            X_train, X_test, y_train, y_test = self.split_data(X, y)
+            self.plot_distribution(y_train, y_test, plot_path)
+            pbar.update(steps)
+
+            model = self.train_model(X_train, y_train)
+            pbar.update(steps * 3)
+
+            self.evaluate_model(model, X_test, y_test, plot_path)
+            pbar.update(steps * 4)
+
+            self.save_model(model, file_path)
+            pbar.update(steps)
+
+        print("Treinamento concluído com sucesso!")
+        print(f"Gráficos salvos em: {plot_path}")
+        print(f"Modelo salvo como: {file_path}")
 
 
 if __name__ == "__main__":
     trainer = IrisModelTrainer()
-    trainer.run("./ml/iris_lr_v1.joblib")
+    timestamp = datetime.now().strftime("%Y%m%d")
+    model_file_path = f"./saved_models/iris_lr_v1_{timestamp}.joblib"
+    plot_path = "./data"
+    trainer.run(model_file_path, plot_path)
