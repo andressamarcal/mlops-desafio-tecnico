@@ -26,14 +26,14 @@ plugins:
         python:
           setup_commands:
             - import sys
-            - sys.path.append('../')
+            - sys.path.insert(0, 'src')
           options:
             docstring_style: google
 
 theme:
   name: material
-  feature:
-    tabs: true
+  features:
+    - tabs
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -60,7 +60,5 @@ extra:
       link: https://pypi.org/project/mlops-desafio-tecnico
 
 markdown_extensions:
-  - toc:
-      permalink: true
-  - pymdownx.arithmatex:
-      generic: true
+  - toc
+  - pymdownx.arithmatex
