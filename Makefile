@@ -53,7 +53,7 @@ train: ## Train the model
 .PHONY: api
 api: ## Start FastAPI server
 	@echo "🚀 Starting FastAPI server"
-	@PYTHONPATH=$(PWD)/src poetry run uvicorn src.desafio1.api.v1.main:app --host 0.0.0.0 --port 8000
+	@PYTHONPATH=$(PWD)/src poetry run uvicorn src.desafio1.api.v1.main:app --host 0.0.0.0 --port 8000 --reload
 
 .PHONY: docs
 docs: ## Build and serve the documentation

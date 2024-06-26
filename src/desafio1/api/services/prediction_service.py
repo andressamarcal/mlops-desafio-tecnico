@@ -1,19 +1,16 @@
-import joblib
+from typing import List
 
-model = joblib.load("path/to/your/model.pkl")
+import numpy as np
+from sklearn.pipeline import Pipeline
 
 
-def make_prediction(iris_data):
-    """
-    Realiza uma previsão usando o modelo de machine learning carregado.
+def predict(model: Pipeline, features: List[float]) -> int:
+    data = np.array(features).reshape(1, -1)
+    prediction = model.predict(data)[0]
+    return prediction
 
-    Args:
-        iris_data (IrisModel): Dados da flor Íris para a qual a previsão deve ser feita.
 
-    Returns:
-        dict: Um dicionário contendo as previsões e probabilidades.
-    """
-    data = [[iris_data.sepal_length, iris_data.sepal_width, iris_data.petal_length, iris_data.petal_width]]
-    prediction = model.predict(data)
-    probability = model.predict_proba(data)
-    return {"prediction": prediction.tolist(), "probability": probability.tolist()}
+def predict_proba(model: Pipeline, features: List[float]) -> List[float]:
+    data = np.array(features).reshape(1, -1)
+    probabilities = model.predict_proba(data)[0]
+    return probabilities.tolist()

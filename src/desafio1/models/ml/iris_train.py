@@ -10,7 +10,6 @@ import seaborn as sns
 from imblearn.over_sampling import SMOTE
 from numpy import ndarray
 from sklearn import datasets
-from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
     accuracy_score,
     auc,
@@ -22,7 +21,7 @@ from sklearn.metrics import (
     roc_curve,
 )
 from sklearn.model_selection import StratifiedKFold, cross_val_score, learning_curve, train_test_split
-from sklearn.multiclass import OneVsRestClassifier
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from tqdm import tqdm
@@ -31,12 +30,12 @@ from tqdm import tqdm
 class IrisModelTrainer:
     def __init__(self) -> None:
         """
-        Inicializa a classe IrisModelTrainer com um pipeline de padronização e regressão logística.
+        Inicializa a classe IrisModelTrainer com um pipeline de padronização e KNN.
         """
         self.pipeline = Pipeline(
             [
                 ("scaler", StandardScaler()),
-                ("classifier", OneVsRestClassifier(LogisticRegression(max_iter=200, C=0.1))),
+                ("classifier", KNeighborsClassifier(n_neighbors=5)),
             ]
         )
 
@@ -179,25 +178,6 @@ class IrisModelTrainer:
         plt.savefig(os.path.join(plot_path, "roc_curve.png"))
         plt.close()
 
-    def plot_feature_importance(self, model: Pipeline, plot_path: str) -> None:
-        """
-        Plota a importância das features e salva o gráfico.
-
-        Args:
-            model (Pipeline): Modelo treinado.
-            plot_path (str): Caminho para salvar os gráficos.
-        """
-        importances = model.named_steps["classifier"].estimators_[0].coef_[0]
-        feature_names = ["Comprimento Sépala", "Largura Sépala", "Comprimento Pétala", "Largura Pétala"]
-
-        plt.figure(figsize=(10, 6))
-        plt.bar(feature_names, importances, color="blue")
-        plt.xlabel("Features")
-        plt.ylabel("Importance")
-        plt.title("Feature Importance")
-        plt.savefig(os.path.join(plot_path, "feature_importance.png"))
-        plt.close()
-
     def plot_dataset_info(self, X: ndarray, plot_path: str) -> None:
         """
         Plota informações básicas sobre o dataset.
@@ -284,11 +264,10 @@ class IrisModelTrainer:
         self.plot_metrics(y_test, y_pred, plot_path)
         self.plot_confusion_matrix(y_test, y_pred, plot_path)
         self.plot_roc_curve(y_test, y_proba, plot_path)
-        self.plot_feature_importance(model, plot_path)
 
     def train_model(self, X_train: ndarray, y_train: ndarray) -> Pipeline:
         """
-        Treina o modelo de classificação usando Logistic Regression.
+        Treina o modelo de classificação usando KNN.
 
         Args:
             X_train (ndarray): Atributos de treinamento.
@@ -309,14 +288,13 @@ class IrisModelTrainer:
             y (ndarray): Alvos do dataset.
             plot_path (str): Caminho para salvar os gráficos.
         """
-        model = OneVsRestClassifier(LogisticRegression(max_iter=200, C=0.1))
+        model = KNeighborsClassifier(n_neighbors=5)
         skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
         scores = cross_val_score(model, X, y, cv=skf)
 
         print("Acurácia com validação cruzada:", scores.mean())
         print("Desvio padrão da acurácia:", scores.std())
 
-        # Plotting the cross-validation scores
         plt.figure(figsize=(10, 6))
         plt.plot(range(1, len(scores) + 1), scores, marker="o", linestyle="-", color="blue")
         plt.title("Cross Validation Scores")
@@ -369,7 +347,6 @@ class IrisModelTrainer:
 
             model = self.train_model(X_train_balanced, y_train_balanced)
             pbar.update(steps)
-
             self.evaluate_model(model, X_test, y_test, plot_path)
             pbar.update(steps)
 
@@ -387,6 +364,6 @@ class IrisModelTrainer:
 if __name__ == "__main__":
     trainer = IrisModelTrainer()
     timestamp = datetime.now().strftime("%Y%m%d")
-    model_file_path = f"./saved_models/iris_lr_v1_{timestamp}.pkl"
+    model_file_path = f"./saved_models/iris_knn_v1_{timestamp}.pkl"
     plot_path = "./data"
     trainer.run(model_file_path, plot_path)
