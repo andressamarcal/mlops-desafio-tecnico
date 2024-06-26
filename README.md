@@ -30,21 +30,9 @@ To finalize the set-up for publishing to PyPi or Artifactory, see [here](https:/
 For activating the automatic documentation with MkDocs, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/mkdocs/#enabling-the-documentation-on-github).
 To enable the code coverage reports, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/codecov/).
 
-## Releasing a new version
-
-- Create an API Token on [Pypi](https://pypi.org/).
-- Add the API Token to your projects secrets with the name `PYPI_TOKEN` by visiting [this page](https://github.com/andressamarcal/mlops-desafio-tecnico/settings/secrets/actions/new).
-- Create a [new release](https://github.com/andressamarcal/mlops-desafio-tecnico/releases/new) on Github.
-- Create a new tag in the form `*.*.*`.
-
-For more details, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/cicd/#how-to-trigger-a-release).
-
----
-
-Repository initiated with [fpgmaas/cookiecutter-poetry](https://github.com/fpgmaas/cookiecutter-poetry).
-
 # ARQUITETURA DO PROJETO
 
+```
 .
 ├── Dockerfile
 ├── LICENSE
@@ -83,3 +71,7 @@ Repository initiated with [fpgmaas/cookiecutter-poetry](https://github.com/fpgma
 └── .github # Configuração CI/CD
 └── workflows
 └── ci.yml
+```
+
+Repository initiated with [fpgmaas/cookiecutter-poetry](<https://github.com/fpgmaas/>
+cookiecutter-poetry).
