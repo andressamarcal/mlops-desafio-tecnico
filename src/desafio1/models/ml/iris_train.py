@@ -1,4 +1,5 @@
 import os
+import pickle
 from collections import Counter
 from datetime import datetime
 from typing import Tuple
@@ -6,7 +7,6 @@ from typing import Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from joblib import dump
 from numpy import ndarray
 from sklearn import datasets
 from sklearn.linear_model import LogisticRegression
@@ -245,7 +245,8 @@ class IrisModelTrainer:
             file_path (str): Caminho para salvar o modelo treinado.
         """
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        dump(model, file_path)
+        with open(file_path, "wb") as f:
+            pickle.dump(model, f)
         print(f"Modelo salvo como: {file_path}")
 
     def run(self, file_path: str, plot_path: str) -> None:
