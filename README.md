@@ -34,27 +34,6 @@ Após rodar o comando de treinamento, você deve ver logs indicando o progresso 
 Verificar API:
 Após subir a API, você pode acessar a documentação interativa em http://localhost:8000/docs e testar os endpoints disponíveis.
 
-# Executando o Projeto
-
-You are now ready to start development on your project!
-The CI/CD pipeline will be triggered when you open a pull request, merge to main, or when you create a new release.
-
-For activating the automatic documentation with MkDocs, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/mkdocs/#enabling-the-documentation-on-github).
-To enable the code coverage reports, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/codecov/).
-
-## Releasing a new version
-
-- Create an API Token on [Pypi](https://pypi.org/).
-- Add the API Token to your projects secrets with the name `PYPI_TOKEN` by visiting [this page](https://github.com/andressamarcal/mlops-desafio-tecnico/settings/secrets/actions/new).
-- Create a [new release](https://github.com/andressamarcal/mlops-desafio-tecnico/releases/new) on Github.
-- Create a new tag in the form `*.*.*`.
-
-For more details, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/cicd/#how-to-trigger-a-release).
-
----
-
-Repository initiated with [fpgmaas/cookiecutter-poetry](https://github.com/fpgmaas/cookiecutter-poetry).
-
 # Estrutura do Projeto/Repositorio
 
 ```
