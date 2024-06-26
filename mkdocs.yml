@@ -11,12 +11,12 @@ nav:
   - Home: index.md
   - API: api.md
   - Código:
-      - Models: src/desafio1/api/common/models.py
-      - Schemas: src/desafio1/api/common/schemas.py
-      - Data Service: src/desafio1/api/services/data_service.py
-      - Prediction Service: src/desafio1/api/services/prediction_service.py
-      - Main: src/desafio1/api/v1/main.py
-      - Iris Router: src/desafio1/api/v1/routers/iris_router.py
+      - Models: models.md
+      - Schemas: schemas.md
+      - Data Service: data_service.md
+      - Prediction Service: prediction_service.md
+      - Main: main.md
+      - Iris Router: iris_router.md
   - Modules: modules.md
 
 plugins:
