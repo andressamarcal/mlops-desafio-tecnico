@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "mlops_desafio_tecnico"
 version = "0.0.1"
-description = "Projeto contendo as resoluções técnicas e teoricas"
-authors = ["Andressa Marçal <fandressagb@gmail.com>"]
+description = "Projeto contendo as resoluções técnicas e teoricas do desafio1 e desafio2"
+authors = ["Andressa Marçal <andressagb@gmail.com>"]
 repository = "https://github.com/andressamarcal/mlops-desafio-tecnico"
 documentation = "https://andressamarcal.github.io/mlops-desafio-tecnico/"
 readme = "README.md"

@@ -1,7 +1,7 @@
 site_name: mlops-desafio-tecnico
 repo_url: https://github.com/andressamarcal/mlops-desafio-tecnico
 site_url: https://andressamarcal.github.io/mlops-desafio-tecnico
-site_description: Projeto contendo as resoluções técnicas e teoricas
+site_description: Projeto contendo as resoluções técnicas e teóricas
 site_author: Andressa Marçal
 edit_uri: edit/main/docs/
 repo_name: andressamarcal/mlops-desafio-tecnico
@@ -9,15 +9,27 @@ copyright: Maintained by <a href="https://andressamarcal.com">Florian</a>.
 
 nav:
   - Home: index.md
+  - API: api.md
+  - Código:
+      - Models: src/desafio1/api/common/models.py
+      - Schemas: src/desafio1/api/common/schemas.py
+      - Data Service: src/desafio1/api/services/data_service.py
+      - Prediction Service: src/desafio1/api/services/prediction_service.py
+      - Main: src/desafio1/api/v1/main.py
+      - Iris Router: src/desafio1/api/v1/routers/iris_router.py
   - Modules: modules.md
+
 plugins:
   - search
   - mkdocstrings:
       handlers:
         python:
-            setup_commands:
-                - import sys
-                - sys.path.append('../')
+          setup_commands:
+            - import sys
+            - sys.path.append('../')
+          options:
+            docstring_style: google
+
 theme:
   name: material
   feature:
