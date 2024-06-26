@@ -1,21 +1,24 @@
-# syntax=docker/dockerfile:1
+FROM python:3.11-slim
 
-FROM python:3.9-slim-buster
+USER root
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -sSL https://install.python-poetry.org | POETRY_HOME=/etc/poetry python3 - && \
+    ln -s /etc/poetry/bin/poetry /usr/local/bin/poetry
 
-ENV POETRY_VERSION=1.4 \
-    POETRY_VIRTUALENVS_CREATE=false
+WORKDIR /app
 
-# Install poetry
-RUN pip install "poetry==$POETRY_VERSION"
+COPY ./pyproject.toml ./poetry.lock* /app/
 
-# Copy only requirements to cache them in docker layer
-WORKDIR /code
-COPY poetry.lock pyproject.toml /code/
+RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Project initialization:
-RUN poetry install --no-interaction --no-ansi --no-root --no-dev
+COPY . /app
 
-# Copy Python code to the Docker image
-COPY mlops_desafio_tecnico /code/mlops_desafio_tecnico/
+ENV PYTHONPATH /app
 
-CMD [ "python", "mlops_desafio_tecnico/foo.py"]
+# porta para a aplicação
+EXPOSE 8000
+
+# Comando padrão para rodar a API
+CMD ["poetry", "run", "uvicorn", "src.desafio1.api.v1.main:app", "--host", "0.0.0.0", "--port", "8000"]

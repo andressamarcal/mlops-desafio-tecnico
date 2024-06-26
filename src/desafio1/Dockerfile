@@ -1,22 +1,26 @@
-FROM python:3.11-slim
+# Use a imagem base do Python
+FROM python:3.11
 
+# Defina o diretório de trabalho no contêiner
 WORKDIR /app
 
-# Configurar o ambiente para não criar arquivos .pyc
-ENV PYTHONDONTWRITEBYTECODE 1
-# Configurar o ambiente para não fazer buffering das saídas
-ENV PYTHONUNBUFFERED 1
+# Copie o arquivo pyproject.toml e poetry.lock para o contêiner
+COPY pyproject.toml poetry.lock /app/
 
-RUN pip install --no-cache-dir poetry
+# Instale o Poetry
+RUN pip install poetry
 
-COPY pyproject.toml poetry.lock* /app/
+# Instale as dependências do projeto
+RUN poetry install
 
-# Poetry config:
-# - Não criar um ambiente virtual dentro do container, pois o container já é um ambiente isolado
-# - Instalar as dependências de produção
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi --no-dev
-
+# Copie todo o código do projeto para o contêiner
 COPY . /app
 
-CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Comando para treinar o modelo
+CMD ["make", "train"]
+
+# Exponha a porta para a API
+EXPOSE 8000
+
+# Comando para rodar a API
+CMD ["make", "api"]

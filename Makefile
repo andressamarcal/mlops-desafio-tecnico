@@ -2,7 +2,7 @@
 install: ## Install the poetry environment and install the pre-commit hooks
 	@echo "🚀 Creating virtual environment using pyenv and poetry"
 	@poetry install
-	@ poetry run pre-commit install
+	@poetry run pre-commit install
 	@poetry shell
 
 .PHONY: check
@@ -27,11 +27,11 @@ build: clean-build ## Build wheel file using poetry
 	@poetry build
 
 .PHONY: clean-build
-clean-build: ## clean build artifacts
+clean-build: ## Clean build artifacts
 	@rm -rf dist
 
 .PHONY: publish
-publish: ## publish a release to pypi.
+publish: ## Publish a release to PyPI.
 	@echo "🚀 Publishing: Dry run."
 	@poetry config pypi-token.pypi $(PYPI_TOKEN)
 	@poetry publish --dry-run
@@ -44,6 +44,16 @@ build-and-publish: build publish ## Build and publish.
 .PHONY: docs-test
 docs-test: ## Test if documentation can be built without warnings or errors
 	@poetry run mkdocs build -s
+
+.PHONY: train
+train: ## Train the model
+	@echo "🚀 Training the model"
+	@PYTHONPATH=$(PWD)/src poetry run python src/desafio1/models/ml/iris_train.py
+
+.PHONY: api
+api: ## Start FastAPI server
+	@echo "🚀 Starting FastAPI server"
+	@PYTHONPATH=$(PWD)/src poetry run uvicorn src.desafio1.api.v1.main:app --host 0.0.0.0 --port 8000 --reload
 
 .PHONY: docs
 docs: ## Build and serve the documentation
