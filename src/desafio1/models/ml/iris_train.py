@@ -7,11 +7,21 @@ from typing import Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+from imblearn.over_sampling import SMOTE
 from numpy import ndarray
 from sklearn import datasets
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, auc, confusion_matrix, f1_score, precision_score, recall_score, roc_curve
-from sklearn.model_selection import train_test_split
+from sklearn.metrics import (
+    accuracy_score,
+    auc,
+    classification_report,
+    confusion_matrix,
+    f1_score,
+    precision_score,
+    recall_score,
+    roc_curve,
+)
+from sklearn.model_selection import StratifiedKFold, cross_val_score, learning_curve, train_test_split
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -19,14 +29,14 @@ from tqdm import tqdm
 
 
 class IrisModelTrainer:
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Inicializa a classe IrisModelTrainer com um pipeline de padronização e regressão logística.
         """
         self.pipeline = Pipeline(
             [
                 ("scaler", StandardScaler()),
-                ("classifier", OneVsRestClassifier(LogisticRegression(max_iter=200))),
+                ("classifier", OneVsRestClassifier(LogisticRegression(max_iter=200, C=0.1))),
             ]
         )
 
@@ -41,7 +51,7 @@ class IrisModelTrainer:
 
     def split_data(self, X: ndarray, y: ndarray) -> Tuple[ndarray, ndarray, ndarray, ndarray]:
         """
-        Divide os dados em conjuntos de treinamento e teste.
+        Divide os dados em conjuntos de treinamento e teste com estratificação.
 
         Args:
             X (ndarray): Atributos do dataset.
@@ -50,8 +60,23 @@ class IrisModelTrainer:
         Returns:
             Tuple[ndarray, ndarray, ndarray, ndarray]: Conjuntos de dados divididos em treinamento e teste.
         """
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
         return X_train, X_test, y_train, y_test
+
+    def balance_data(self, X_train: ndarray, y_train: ndarray) -> Tuple[ndarray, ndarray]:
+        """
+        Aplica o oversampling nas classes minoritárias para balancear os dados de treinamento.
+
+        Args:
+            X_train (ndarray): Atributos de treinamento.
+            y_train (ndarray): Alvos de treinamento.
+
+        Returns:
+            Tuple[ndarray, ndarray]: Dados de treinamento balanceados.
+        """
+        smote = SMOTE(random_state=42)
+        X_train_balanced, y_train_balanced = smote.fit_resample(X_train, y_train)
+        return X_train_balanced, y_train_balanced
 
     def plot_distribution(self, y_train: ndarray, y_test: ndarray, plot_path: str) -> None:
         """
@@ -194,6 +219,52 @@ class IrisModelTrainer:
         plt.savefig(os.path.join(plot_path, "dataset_info.png"))
         plt.close()
 
+    def plot_learning_curve(self, model, X, y, plot_path: str) -> None:
+        """
+        Plota a curva de aprendizado do modelo.
+
+        Args:
+            model: O modelo a ser avaliado.
+            X (ndarray): Atributos do dataset.
+            y (ndarray): Alvos do dataset.
+            plot_path (str): Caminho para salvar os gráficos.
+        """
+        train_sizes, train_scores, test_scores = learning_curve(
+            model, X, y, cv=5, n_jobs=-1, train_sizes=np.linspace(0.1, 1.0, 10)
+        )
+
+        train_scores_mean = np.mean(train_scores, axis=1)
+        train_scores_std = np.std(train_scores, axis=1)
+        test_scores_mean = np.mean(test_scores, axis=1)
+        test_scores_std = np.std(test_scores, axis=1)
+
+        plt.figure()
+        plt.title("Learning Curve")
+        plt.xlabel("Training examples")
+        plt.ylabel("Score")
+        plt.grid()
+
+        plt.fill_between(
+            train_sizes,
+            train_scores_mean - train_scores_std,
+            train_scores_mean + train_scores_std,
+            alpha=0.1,
+            color="r",
+        )
+        plt.fill_between(
+            train_sizes,
+            test_scores_mean - test_scores_std,
+            test_scores_mean + test_scores_std,
+            alpha=0.1,
+            color="g",
+        )
+        plt.plot(train_sizes, train_scores_mean, "o-", color="r", label="Training score")
+        plt.plot(train_sizes, test_scores_mean, "o-", color="g", label="Cross-validation score")
+
+        plt.legend(loc="best")
+        plt.savefig(os.path.join(plot_path, "learning_curve.png"))
+        plt.close()
+
     def evaluate_model(self, model: Pipeline, X_test: ndarray, y_test: ndarray, plot_path: str) -> None:
         """
         Avalia o modelo usando as métricas precisão, recall e f1-score.
@@ -207,15 +278,8 @@ class IrisModelTrainer:
         y_pred = model.predict(X_test)
         y_proba = model.predict_proba(X_test)
 
-        accuracy = accuracy_score(y_test, y_pred)
-        precision = precision_score(y_test, y_pred, average="macro")
-        recall = recall_score(y_test, y_pred, average="macro")
-        f1 = f1_score(y_test, y_pred, average="macro")
-
-        print(f"Accuracy: {accuracy:.2f}")
-        print(f"Precision: {precision:.2f}")
-        print(f"Recall: {recall:.2f}")
-        print(f"F1-Score: {f1:.2f}")
+        report = classification_report(y_test, y_pred)
+        print("\nRelatório de Classificação:\n", report)
 
         self.plot_metrics(y_test, y_pred, plot_path)
         self.plot_confusion_matrix(y_test, y_pred, plot_path)
@@ -235,6 +299,33 @@ class IrisModelTrainer:
         """
         self.pipeline.fit(X_train, y_train)
         return self.pipeline
+
+    def cross_validate_model(self, X: ndarray, y: ndarray, plot_path: str) -> None:
+        """
+        Realiza a validação cruzada no modelo para avaliar o desempenho e plota os resultados.
+
+        Args:
+            X (ndarray): Atributos do dataset.
+            y (ndarray): Alvos do dataset.
+            plot_path (str): Caminho para salvar os gráficos.
+        """
+        model = OneVsRestClassifier(LogisticRegression(max_iter=200, C=0.1))
+        skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        scores = cross_val_score(model, X, y, cv=skf)
+
+        print("Acurácia com validação cruzada:", scores.mean())
+        print("Desvio padrão da acurácia:", scores.std())
+
+        # Plotting the cross-validation scores
+        plt.figure(figsize=(10, 6))
+        plt.plot(range(1, len(scores) + 1), scores, marker="o", linestyle="-", color="blue")
+        plt.title("Cross Validation Scores")
+        plt.xlabel("Fold")
+        plt.ylabel("Accuracy")
+        plt.ylim(0, 1)
+        plt.grid(True)
+        plt.savefig(os.path.join(plot_path, "cross_validation_scores.png"))
+        plt.close()
 
     def save_model(self, model: Pipeline, file_path: str) -> None:
         """
@@ -258,26 +349,37 @@ class IrisModelTrainer:
             file_path (str): Caminho para salvar o modelo treinado.
             plot_path (str): Caminho para salvar os gráficos de métricas.
         """
+
         steps = 10
         with tqdm(total=100, desc="Treinamento do Modelo", unit="step") as pbar:
             X, y = self.load_data()
+            pbar.update(steps)
             self.plot_dataset_info(X, plot_path)
             pbar.update(steps)
 
             X_train, X_test, y_train, y_test = self.split_data(X, y)
+            pbar.update(steps)
+
             self.plot_distribution(y_train, y_test, plot_path)
             pbar.update(steps)
 
-            model = self.train_model(X_train, y_train)
-            pbar.update(steps * 3)
+            X_train_balanced, y_train_balanced = self.balance_data(X_train, y_train)
+            self.cross_validate_model(X_train_balanced, y_train_balanced, plot_path)
+            pbar.update(steps)
+
+            model = self.train_model(X_train_balanced, y_train_balanced)
+            pbar.update(steps)
 
             self.evaluate_model(model, X_test, y_test, plot_path)
-            pbar.update(steps * 4)
+            pbar.update(steps)
+
+            self.plot_learning_curve(model, X, y, plot_path)
+            pbar.update(steps)
 
             self.save_model(model, file_path)
             pbar.update(steps)
 
-        print("Treinamento concluído com sucesso!")
+        print("Treinamento concluído com sucesso!\n")
         print(f"Gráficos salvos em: {plot_path}")
         print(f"Modelo salvo como: {file_path}")
 
@@ -285,6 +387,6 @@ class IrisModelTrainer:
 if __name__ == "__main__":
     trainer = IrisModelTrainer()
     timestamp = datetime.now().strftime("%Y%m%d")
-    model_file_path = f"./saved_models/iris_lr_v1_{timestamp}.joblib"
+    model_file_path = f"./saved_models/iris_lr_v1_{timestamp}.pkl"
     plot_path = "./data"
     trainer.run(model_file_path, plot_path)

@@ -13,7 +13,7 @@ class IrisPredictionRequest(BaseModel):
 
 
 class IrisPredictionResponse(BaseModel):
-    prediction: int
+    prediction: str
     probability: float
 
 
@@ -48,11 +48,13 @@ async def get_prediction(request: IrisPredictionRequest, req: Request):
         IrisPredictionResponse: Um objeto contendo a previsão e a probabilidade.
     """
     model = get_model(req)
+    class_names = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
     try:
         data = [[request.sepal_length, request.sepal_width, request.petal_length, request.petal_width]]
-        prediction = model.predict(data)[0]
+        class_index = model.predict(data)[0]
+        class_name = class_names[class_index]
         probability = max(model.predict_proba(data)[0])
-        return IrisPredictionResponse(prediction=prediction, probability=probability)
+        return IrisPredictionResponse(prediction=class_name, probability=probability)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=f"Erro de valor: {e}") from e
     except Exception as e:

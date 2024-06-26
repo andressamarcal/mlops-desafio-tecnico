@@ -1,38 +1,52 @@
 # mlops-desafio-tecnico
 
-[![Release](https://img.shields.io/github/v/release/andressamarcal/mlops-desafio-tecnico)](https://img.shields.io/github/v/release/andressamarcal/mlops-desafio-tecnico)
-[![Build status](https://img.shields.io/github/actions/workflow/status/andressamarcal/mlops-desafio-tecnico/main.yml?branch=main)](https://github.com/andressamarcal/mlops-desafio-tecnico/actions/workflows/main.yml?query=branch%3Amain)
-[![codecov](https://codecov.io/gh/andressamarcal/mlops-desafio-tecnico/branch/main/graph/badge.svg)](https://codecov.io/gh/andressamarcal/mlops-desafio-tecnico)
-[![Commit activity](https://img.shields.io/github/commit-activity/m/andressamarcal/mlops-desafio-tecnico)](https://img.shields.io/github/commit-activity/m/andressamarcal/mlops-desafio-tecnico)
-[![License](https://img.shields.io/github/license/andressamarcal/mlops-desafio-tecnico)](https://img.shields.io/github/license/andressamarcal/mlops-desafio-tecnico)
+Projeto contendo as resoluções técnicas e teoricas de dois desafios.
+Dentro do projeto, você encontrará as resoluções nos seguintes caminhos:
 
-Projeto contendo as resoluções técnicas e teoricas
+`mlops-desafio-tecnico/src/desafio1`: **Solução para o desafio1 do case técnico.**
+`mlops-desafio-tecnico/src/desafio2`: **Solução para o desafio2 do case técnico.**
 
 - **Github repository**: <https://github.com/andressamarcal/mlops-desafio-tecnico/>
 - **Documentation** <https://andressamarcal.github.io/mlops-desafio-tecnico/>
 
-## Getting started with your project
+## Configurando o Projeto
 
-First, create a repository on GitHub with the same name as this project, and then run the following commands:
+1. Baixe o projeto em sua maquina, utilizando o git:
+   `git clone git@github.com:andressamarcal/mlops-desafio-tecnico.git`
 
-```bash
-git init -b main
-git add .
-git commit -m "init commit"
-git remote add origin git@github.com:andressamarcal/mlops-desafio-tecnico.git
-git push -u origin main
-```
+2. **Certifique-se de estar no diretorio raiz do projeto**, onde encontra-se o  arquivo do Dockerfile, após isso, em seguida, rode o comando:
+   `docker build -t iris-classifier .`
 
-Finally, install the environment and the pre-commit hooks with
+3. Após a conclusão do Docker build, você pode testar o treinamento do modelo e a API com os seguintes comandos.
+   1. **Treinamento do Modelo**
+Para treinar o modelo dentro do contêiner, você pode usar o comando docker run com a tag iris-classifier e especificar o comando **make train**:
+`docker run iris-classifier make train`
+Este comando irá executar o processo de treinamento do modelo conforme definido no Makefile.
+   1. **Subir a API**
+    Para rodar a API, use o comando docker run novamente, mas desta vez especifique o comando **make api**:
+    `docker run -p 8000:8000 iris-classifier make api`
+    Este comando irá iniciar a API no contêiner e mapear a porta 8000 do contêiner para a porta 8000 do host, permitindo que você acesse a API no endereço http://localhost:8000.
 
-```bash
-make install
-```
+Verificar o Treinamento e a API
+Verificar Logs do Treinamento:
+Após rodar o comando de treinamento, você deve ver logs indicando o progresso e conclusão do treinamento, bem como onde os gráficos e o modelo foram salvos.
+
+Verificar API:
+Após subir a API, você pode acessar a documentação interativa em http://localhost:8000/docs e testar os endpoints disponíveis.
+
+
+
+
+
+
+
+
+
+# Executando o Projeto
 
 You are now ready to start development on your project!
 The CI/CD pipeline will be triggered when you open a pull request, merge to main, or when you create a new release.
 
-To finalize the set-up for publishing to PyPi or Artifactory, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/publishing/#set-up-for-pypi).
 For activating the automatic documentation with MkDocs, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/mkdocs/#enabling-the-documentation-on-github).
 To enable the code coverage reports, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/codecov/).
 
@@ -49,7 +63,9 @@ For more details, see [here](https://fpgmaas.github.io/cookiecutter-poetry/featu
 
 Repository initiated with [fpgmaas/cookiecutter-poetry](https://github.com/fpgmaas/cookiecutter-poetry).
 
-# ARQUITETURA DO PROJETO
+# Estrutura do Projeto/Repositorio
+
+```
 
 .
 ├── Dockerfile
@@ -57,35 +73,38 @@ Repository initiated with [fpgmaas/cookiecutter-poetry](https://github.com/fpgma
 ├── Makefile
 ├── mkdocs.yml
 ├── mlops_desafio_tecnico
-│ ├── api
-│ │ ├── v1 # Versionamento da API
-│ │ │ ├── init.py
-│ │ │ ├── main.py # Ponto de entrada da aplicação FastAPI para a versão 1
-│ │ │ ├── dependencies.py # Gerenciamento de dependências da API
-│ │ │ ├── routers # Roteadores FastAPI
-│ │ │ │ ├── init.py
-│ │ │ │ └── iris_router.py # Roteador para as previsões de íris
-│ │ ├── common # Componentes comuns entre diferentes versões
-│ │ │ ├── init.py
-│ │ │ ├── models.py # Modelos de dados Pydantic
-│ │ │ └── schemas.py # Schemas para validação de dados
-│ │ ├── auth # Autenticação e autorização
-│ │ │ ├── init.py
-│ │ │ └── auth_handler.py # Manipulação de autenticação JWT
-│ │ └── services # Serviços de negócio
-│ │ ├── init.py
-│ │ ├── prediction_service.py # Serviços de predição
-│ │ └── data_service.py # Serviços para manipulação de dados
-│ ├── tests # Testes
-│ │ ├── init.py
-│ │ └── test_iris_router.py
-│ └── init.py
+│   ├── api
+│   │   ├── v1  # Versionamento da API
+│   │   │   ├── __init__.py
+│   │   │   ├── main.py  # Ponto de entrada da aplicação FastAPI para a versão 1
+│   │   │   ├── dependencies.py  # Gerenciamento de dependências da API
+│   │   │   ├── routers  # Roteadores FastAPI
+│   │   │       ├── __init__.py
+│   │   │       └── iris_router.py  # Roteador para as previsões de íris
+│   │   ├── common  # Componentes comuns entre diferentes versões
+│   │   │   ├── __init__.py
+│   │   │   ├── models.py  # Modelos de dados Pydantic
+│   │   │   └── schemas.py  # Schemas para validação de dados
+│   │   ├── auth  # Autenticação e autorização
+│   │   │   ├── __init__.py
+│   │   │   └── auth_handler.py  # Manipulação de autenticação JWT
+│   │   └── services  # Serviços de negócio
+│   │       ├── __init__.py
+│   │       ├── prediction_service.py  # Serviços de predição
+│   │       └── data_service.py  # Serviços para manipulação de dados
+│   ├── tests  # Testes
+│   │   ├── __init__.py
+│   │   └── test_iris_router.py
+│   └── __init__.py
 ├── poetry.lock
 ├── pyproject.toml
 ├── README.md
-├── docs # Documentação MkDocs
-│ ├── index.md
-│ └── modules.md
-└── .github # Configuração CI/CD
-└── workflows
-└── ci.yml
+├── docs  # Documentação MkDocs
+│   ├── index.md
+│   └── modules.md
+└── .github  # Configuração CI/CD
+    └── workflows
+        └── ci.yml
+
+
+```

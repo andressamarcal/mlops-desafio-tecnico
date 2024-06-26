@@ -1,14 +1,14 @@
 import glob
 import os
+import pickle
 
-from api.services.data_service import download_iris_dataset
-from api.v1.routers.iris_router import app_iris_predict_v1
+from desafio1.api.services.data_service import download_iris_dataset
+from desafio1.api.v1.routers.iris_router import app_iris_predict_v1
 from fastapi import FastAPI, HTTPException
-from joblib import load
 
 app = FastAPI(title="Iris Classifier API")
 
-app.include_router(app_iris_predict_v1)
+app.include_router(app_iris_predict_v1, prefix="/v1")
 
 
 def get_latest_model_path(models_dir: str) -> str:
@@ -21,7 +21,7 @@ def get_latest_model_path(models_dir: str) -> str:
     Returns:
         str: Caminho do arquivo de modelo mais recente.
     """
-    model_files = glob.glob(os.path.join(models_dir, "iris_lr_v1_*.joblib"))
+    model_files = glob.glob(os.path.join(models_dir, "iris_lr_v1_*.pkl"))  # Mudança para .pkl
     if not model_files:
         raise FileNotFoundError("Nenhum modelo encontrado no diretório especificado.")
     latest_model = max(model_files, key=os.path.getctime)
@@ -53,7 +53,8 @@ async def startup_event():
         # Carrega o modelo treinado mais recente
         model_dir = "./saved_models"
         model_path = get_latest_model_path(model_dir)
-        app.state.model = load(model_path)
+        with open(model_path, "rb") as f:
+            app.state.model = pickle.load(f)  # Use pickle para carregar o modelo
         print(f"Modelo carregado com sucesso: {model_path}")
     except FileNotFoundError as e:
         print(str(e))
@@ -61,6 +62,9 @@ async def startup_event():
     except ConnectionError as e:
         print(str(e))
         raise HTTPException(status_code=500, detail="Falha ao carregar o dataset Iris no startup.")
+    except Exception as e:
+        print(str(e))
+        raise HTTPException(status_code=500, detail="Erro inesperado ao carregar o modelo ou dataset.")
 
 
 @app.on_event("shutdown")

@@ -19,6 +19,27 @@ A arquitetura deste projeto foi projetada para ser simples, mas eficiente, utili
 - **Scikit-learn**: Para treinamento do modelo de classificação das flores de Íris.
 - **GitHub Actions**: Para automação de CI/CD, garantindo testes e deploy contínuos e consistentes.
 
+## Pipeline da Modelagem
+1. Distribuição das Classes: Para visualizar a distribuição das classes nos conjuntos de treinamento e teste.
+
+2. Métricas do Modelo: Para visualizar as métricas de avaliação do modelo (acurácia, precisão, recall, f1-score).
+
+   Matriz de Confusão: Para entender como o modelo está classificando corretamente e onde está errando.
+
+   Curva ROC: Para visualizar a performance do modelo em termos de taxa de verdadeiros positivos e falsos positivos.
+
+   Importância das Features: Para entender quais features estão contribuindo mais para as previsões do modelo.
+
+   Informações Básicas do Dataset: Para visualizar a distribuição das features individuais.
+
+   Curva de Aprendizado: Para entender como a performance do modelo muda com o tamanho do conjunto de treinamento.
+
+   Validação Cruzada: Para avaliar a estabilidade do modelo em diferentes subconjuntos de dados.
+
+3. Treino e Validação
+4. Plots
+5. Salva artefatos (modelo, plots)
+
 ## Configuração do Projeto
 
 ### Pré-requisitos

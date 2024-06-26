@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -25,11 +25,9 @@ class IrisPredictionResponse(BaseModel):
     """Schema para a resposta da previsão.
 
     Attributes:
-        prediction (List[int]): Lista de previsões de classe para cada instância de entrada.
-        probability (List[List[float]]): Lista de probabilidades associadas a cada classe para cada instância de entrada.
-        log_probability (List[List[float]]): Lista de log probabilidades associadas a cada classe para cada instância de entrada.
+        prediction (str): Previsão de classe para cada instância de entrada.
+        probability (float): Probabilidade associada à classe prevista.
     """
 
-    prediction: List[int]
-    probability: List[List[float]]
-    log_probability: List[List[float]]
+    prediction: str
+    probability: float
