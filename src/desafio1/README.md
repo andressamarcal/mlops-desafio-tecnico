@@ -59,7 +59,7 @@ Para rodar este projeto, você precisará ter na sua maquina:
 - Rode o comando: `make api` para subir a api em localhost
 - Recomendo abrir a api em uma aba do terminal, e em outra aba enviar a requisição para testar a saída do seu endpoint
 
-  - **Exemplo de requisições:**
+  - **Exemplo de requisições(devem ir 4 parametros na requição post):**
     - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=5.1 sepal_width:=3.5 petal_length:=1.4 petal_width:=0.2
     - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=6.3 sepal_width:=2.8 petal_length:=5.1 petal_width:=1.5
     - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=7.2 sepal_width:=3.6 petal_length:=6.1 petal_width:=2.5
