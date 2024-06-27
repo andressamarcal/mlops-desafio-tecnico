@@ -1,11 +1,14 @@
 name: Main
 
 on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened, ready_for_review]
+
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
   quality:
@@ -30,7 +33,7 @@ jobs:
 
       - name: Run pre-commit checks
         run: |
-          poetry run pre-commit run --all-files
+          make check
 
       - name: Run linter
         run: |
@@ -38,7 +41,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          poetry run pytest --cov=src --cov-fail-under=70
+          make test
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
@@ -67,4 +70,4 @@ jobs:
           poetry install
 
       - name: Check if documentation can be built
-        run: poetry run mkdocs build -s
+        run: make docs-test
