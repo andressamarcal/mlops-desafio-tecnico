@@ -17,19 +17,19 @@ jobs:
       - name: Check out
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+      # - name: Set up Python
+      # uses: actions/setup-python@v5
+      # with:
+      # python-version: "3.11"
+      #
+      # - name: Install Poetry
+      # uses: snok/install-poetry@v1
+      # with:
+      # poetry-version: "1.8.1"
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          poetry-version: "1.8.1"
-
-      - name: Install dependencies
-        run: |
-          poetry install
+      # - name: Install dependencies
+      # run: |
+      # poetry install
 
       - name: Run pre-commit checks
         run: |
