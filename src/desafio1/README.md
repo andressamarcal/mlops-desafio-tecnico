@@ -127,16 +127,30 @@ Execute o ambiente virtual:
 `poetry shell`
 
 **Avaliação da Eficiência do Projeto**
-O projeto foi desenvolvido seguindo boas práticas de MLOps para garantir a eficiência e a reprodutibilidade. A utilização do FastAPI permite uma API rápida e eficiente. O modelo de KNN foi escolhido pela sua simplicidade e eficiência, especialmente em conjuntos de dados menores como o Íris.
+Alguns algoritmos e tecnicas foram avaliados e testados no processo de modelagem:
+
+- Decision Tree: Nao foi escolhido.
+- Neigbhood: Nao foi escolhido.
+- Logistic Regression: Nao foi escolhido.
+- KNN: Modelo escolhido
 
 ## Métricas de Avaliação do Modelo
 
 As métricas de avaliação do modelo são:
 
-- Acurácia: 97%
-- Precisão: 97%
-- Recall: 96%
-- F1-Score: 97%
+```bash
+Relatório de Classificação:
+
+               precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        10
+           1       0.83      1.00      0.91        10
+           2       1.00      0.80      0.89        10
+
+    accuracy                           0.93        30
+   macro avg       0.94      0.93      0.93        30
+weighted avg       0.94      0.93      0.93        30
+```
 
 <!-- ## Boas Práticas e Padrões de Projeto -->
 <!--  -->
@@ -241,6 +255,4 @@ Para esse projeto foi escolhida a **Arquitetura em Camadas**:
 Este projeto exemplifica como aplicar boas práticas de engenharia de software na construção
 de uma API robusta, escalável e facilmente mantível para a classificação de flores de Íris. A
 escolha de FastAPI, Poetry, e Docker foi direcionada para facilitar o desenvolvimento, o
-teste e a distribuição da aplicação, garantindo
-
-uma implantação eficaz e eficiente.
+teste e a distribuição da aplicação, garantindo uma implantação eficaz e eficiente. :)
