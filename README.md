@@ -7,6 +7,7 @@ Projeto contendo as resoluções técnicas e teoricas de **dois desafios**.
 Dentro do projeto, você encontrará as resoluções nos seguintes caminhos:
 
 `mlops-desafio-tecnico/src/desafio1`: **Solução para o desafio1 do case técnico.**
+
 `mlops-desafio-tecnico/src/desafio2`: **Solução para o desafio2 do case técnico.**
 
 ## TESTANDO O PROJETO DESAFIO1 DA MANEIRA RAPIDA E FACIL
