@@ -43,7 +43,26 @@ Para rodar este projeto, você precisará ter na sua maquina:
 - Docker
 - Poetry
 
+# TESTANDO O PROJETO DESAFIO1 DA MANEIRA RAPIDA E FACIL
+
 ### Instalação e Execução
+
+## Forma fácil e mais simples
+
+- Clone o repositorio
+- Após garantir que esteja com o **Python 3.11, Docker e Poetry** instalados;
+- Garanta que voce esteja no diretorio RAIZ do projeto: Rode o comando `$pwd` para validar essa etapa.
+- `poetry shell`
+- `poetry install`
+- Após ter o python instalado, e o ambiente poetry de pé com as dependencias instaladas
+- Rode o comando: `make train` para treinar o modelo com algoritmo KNN,a pós garantir a completude do treino...
+- Rode o comando: `make api` para subir a api em localhost
+- Recomendo abrir a api em uma aba do terminal, e em outra aba enviar a requisição para testar a saída do seu endpoint
+
+  - **Exemplo de requisições:**
+    - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=5.1 sepal_width:=3.5 petal_length:=1.4 petal_width:=0.2
+    - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=6.3 sepal_width:=2.8 petal_length:=5.1 petal_width:=1.5
+    - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=7.2 sepal_width:=3.6 petal_length:=6.1 petal_width:=2.5
 
 1. **Clonar o Repositório**
 
@@ -132,7 +151,7 @@ Alguns algoritmos e tecnicas foram avaliados e testados no processo de modelagem
 - Decision Tree (iris_dt_v1_20240626.pkl): Nao foi escolhido.
 - Naive Bayes (iris_nb_v1_20240626.pkl): Nao foi escolhido.
 - Logistic Regression (iris_lr_v1_20240626.pkl): Nao foi escolhido.
-- KNN (iris_knn_v1_20240626.pkl): Modelo escolhido
+- K-Nearest Neighbors (iris_knn_v1_20240626.pkl): Modelo escolhido
 
 > A melhor performance foi do KNN. Os demais foram identificados problemas com Overfitting e falta de generalização com o conjunto de teste/produtivo.
 
@@ -167,10 +186,10 @@ weighted avg       0.94      0.93      0.93        30
 <!-- 7. Provide Clear Documentation -->
 
 <!-- - **Modularidade**: O código é organizado em módulos lógicos e arquivos separados para diferentes responsabilidades. -->
-<!-- <!-- - **Documentação de Código e API**: O código é amplamente documentado e a API possui documentação interativa gerada pelo Swagger. --> -->
-<!-- <!-- - **Testes Automatizados**: Inclui uma suíte de testes que pode ser executada automaticamente em ambientes de CI/CD. --> -->
-<!-- <!-- - **Práticas de CI/CD**: Integração contínua configurada para garantir que cada commit seja testado e que erros sejam capturados rapidamente. --> -->
-<!-- <!-- - **Segurança e Manutenção**: Uso de contêineres para garantir que a aplicação seja segura e fácil de manter em produção. --> -->
+<!-- <!-- - **Documentação de Código e API**: O código é amplamente documentado e a API possui documentação interativa gerada pelo Swagger. -->
+<!-- <!-- - **Testes Automatizados**: Inclui uma suíte de testes que pode ser executada automaticamente em ambientes de CI/CD. -->
+<!-- <!-- - **Práticas de CI/CD**: Integração contínua configurada para garantir que cada commit seja testado e que erros sejam capturados rapidamente. -->
+<!-- <!-- - **Segurança e Manutenção**: Uso de contêineres para garantir que a aplicação seja segura e fácil de manter em produção. -->
 
 # Arquitetura do Projeto
 
