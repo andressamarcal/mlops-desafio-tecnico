@@ -1,26 +1,24 @@
-# Use a imagem base do Python
-FROM python:3.11
+FROM python:3.11-slim
 
-# Defina o diretório de trabalho no contêiner
+USER root
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -sSL https://install.python-poetry.org | POETRY_HOME=/etc/poetry python3 - && \
+    ln -s /etc/poetry/bin/poetry /usr/local/bin/poetry
+
 WORKDIR /app
 
-# Copie o arquivo pyproject.toml e poetry.lock para o contêiner
-COPY pyproject.toml poetry.lock /app/
+COPY ./pyproject.toml ./poetry.lock* /app/
 
-# Instale o Poetry
-RUN pip install poetry
+RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Instale as dependências do projeto
-RUN poetry install
-
-# Copie todo o código do projeto para o contêiner
 COPY . /app
 
-# Comando para treinar o modelo
-CMD ["make", "train"]
+ENV PYTHONPATH /app
 
-# Exponha a porta para a API
+# porta para a aplicação
 EXPOSE 8000
 
-# Comando para rodar a API
-CMD ["make", "api"]
+# Comando padrão para rodar a API
+CMD ["poetry", "run", "uvicorn", "src.desafio1.api.v1.main:app", "--host", "0.0.0.0", "--port", "8000"]
