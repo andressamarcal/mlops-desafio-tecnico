@@ -7,8 +7,8 @@ install: ## Install the poetry environment and install the pre-commit hooks
 
 .PHONY: check
 check: ## Run pre-commit and flake8 checks
-	@poetry run pre-commit run --all-files
-	@poetry run flake8 src tests
+	@~/.poetry/bin/poetry run pre-commit run --all-files
+	@~/.poetry/bin/poetry run flake8 src tests
 
 .PHONY: test
 test: ## Run tests with coverage
