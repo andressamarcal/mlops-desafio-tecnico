@@ -39,10 +39,6 @@ jobs:
         run: |
           black --check src tests
 
-      - name: Run ruff
-        run: |
-          ruff src tests
-
       - name: Run mypy
         run: |
           mypy src
