@@ -162,7 +162,8 @@ Execute o ambiente virtual:
 
 `poetry shell`
 
-**Avaliação da Eficiência do Projeto**
+# Avaliação da Eficiência do Projeto
+
 Alguns algoritmos e tecnicas foram avaliados e testados no processo de modelagem:
 
 - Decision Tree (iris_dt_v1_20240626.pkl): Nao foi escolhido.
