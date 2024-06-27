@@ -66,9 +66,14 @@ Para rodar este projeto, você precisará ter na sua maquina:
 6. Recomendo abrir a api em uma aba do terminal, e em outra aba enviar a requisição para testar a saída do seu endpoint
 
 - **Exemplo de requisições(devem ir 4 parametros na requição post):**
+
+```bash
   - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=5.1 sepal_width:=3.5 petal_length:=1.4 petal_width:=0.2
+
   - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=6.3 sepal_width:=2.8 petal_length:=5.1 petal_width:=1.5
+
   - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=7.2 sepal_width:=3.6 petal_length:=6.1 petal_width:=2.5
+```
 
 ---
 
@@ -165,7 +170,34 @@ Alguns algoritmos e tecnicas foram avaliados e testados no processo de modelagem
 - Logistic Regression (iris_lr_v1_20240626.pkl): Nao foi escolhido.
 - K-Nearest Neighbors (iris_knn_v1_20240626.pkl): Modelo escolhido
 
-> A melhor performance foi do KNN. Os demais foram identificados problemas com Overfitting e falta de generalização com o conjunto de teste/produtivo.
+Análisando o Desempenho, e motivando a minha escolha =D
+
+- Decision Tree (DT)
+
+  - Vantagens: Fácil de interpretar e visualizar, capaz de capturar relações não lineares.
+  - Desvantagens: Propenso a **overfitting**, especialmente com conjuntos de dados pequenos como o Íris.
+
+- Logistic Regression (LR)
+
+  - Vantagens: Simples, eficiente e bom desempenho com problemas de classificação linear.
+  - Desvantagens: Pode ter **desempenho inferior quando as classes não são linearmente separáveis**. No caso do Íris, as classes não são perfeitamente lineares, o que pode limitar o desempenho da regressão logística. =/
+
+- Naive Bayes (NB)
+  - Vantagens: Simples, rápido e funciona bem com dados categóricos.
+  - Desvantagens: Assumir que todas as features são independentes é uma simplificação que raramente se verifica na prática. No caso do Íris, as **features podem não ser completamente independentes**, o que afeta negativamente o desempenho do Naive Bayes.
+  -
+- K-Nearest Neighbors (KNN)
+  - Vantagens: Não faz suposições sobre a distribuição dos dados, captura relações não lineares entre as features, fácil de entender e implementar.
+  - Desvantagens: **Pode ser computacionalmente caro para grandes conjuntos de dados**, mas o conjunto de dados Íris é pequeno, então isso não é um problema significativo.
+
+Maaaaaaas, bora lá, se não ficou claro, vou explicar o pq o KNN foi o melhor =P
+
+- Simplicidade e Eficácia:
+  - Para o tamanho do conjunto de dados do Íris (150 amostras), o KNN é uma escolha prática que oferece uma boa acurácia sem a necessidade de um modelo complexo. ;D
+- Desempenho Avaliado pelas Métricas:
+  - As métricas de avaliação mostram uma precisão, recall e f1-score elevados para o KNN, indicando que ele é capaz de classificar corretamente a maioria das amostras.
+
+> A melhor performance/métricas foi do KNN. Os demais foram identificados problemas com Overfitting =/ e falta de generalização com o conjunto de teste/produtivo.
 
 ## Métricas de Avaliação do Modelo
 
