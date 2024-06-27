@@ -199,7 +199,7 @@ class IrisModelTrainer:
         plt.savefig(os.path.join(plot_path, "dataset_info.png"))
         plt.close()
 
-    def plot_learning_curve(self, model, X, y, plot_path: str) -> None:
+    def plot_learning_curve(self, model: Pipeline, X: ndarray, y: ndarray, plot_path: str) -> None:
         """
         Plota a curva de aprendizado do modelo.
 
