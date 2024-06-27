@@ -129,10 +129,12 @@ Execute o ambiente virtual:
 **Avaliação da Eficiência do Projeto**
 Alguns algoritmos e tecnicas foram avaliados e testados no processo de modelagem:
 
-- Decision Tree (DT): Nao foi escolhido.
-- Naive Bayes (NB): Nao foi escolhido.
-- Logistic Regression (LR): Nao foi escolhido.
-- Naive Bayes (NB): Modelo escolhido
+- Decision Tree (iris_dt_v1_20240626.pkl): Nao foi escolhido.
+- Naive Bayes (iris_nb_v1_20240626.pkl): Nao foi escolhido.
+- Logistic Regression (iris_lr_v1_20240626.pkl): Nao foi escolhido.
+- KNN (iris_knn_v1_20240626.pkl): Modelo escolhido
+
+> A melhor performance foi do KNN. Os demais foram identificados problemas com Overfitting e falta de generalização com o conjunto de teste/produtivo.
 
 ## Métricas de Avaliação do Modelo
 
