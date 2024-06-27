@@ -1,8 +1,18 @@
-# mlops-desafio-tecnico
+# MLOps Desafio Técnico
 
-[![Release](https://img.shields.io/github/v/release/andressamarcal/mlops-desafio-tecnico)](https://img.shields.io/github/v/release/andressamarcal/mlops-desafio-tecnico)
-[![Build status](https://img.shields.io/github/actions/workflow/status/andressamarcal/mlops-desafio-tecnico/main.yml?branch=main)](https://github.com/andressamarcal/mlops-desafio-tecnico/actions/workflows/main.yml?query=branch%3Amain)
-[![Commit activity](https://img.shields.io/github/commit-activity/m/andressamarcal/mlops-desafio-tecnico)](https://img.shields.io/github/commit-activity/m/andressamarcal/mlops-desafio-tecnico)
-[![License](https://img.shields.io/github/license/andressamarcal/mlops-desafio-tecnico)](https://img.shields.io/github/license/andressamarcal/mlops-desafio-tecnico)
+Bem-vindo à documentação do projeto MLOps Desafio Técnico. Este projeto foi desenvolvido para criar uma API que classifica flores do dataset Íris em suas respectivas espécies com base nas características das sépalas e pétalas.
 
-Projeto contendo as resoluções técnicas e teoricas
+## Objetivo do Projeto
+
+O objetivo deste projeto é desenvolver e treinar modelos de machine learning para classificação de flores e disponibilizar esses modelos através de uma API RESTful utilizando FastAPI.
+
+## Estrutura do Projeto
+
+- **API**: Implementada com FastAPI para servir os modelos de machine learning.
+- **Modelos**: Contém os scripts para treinamento dos modelos.
+- **Serviços**: Contém a lógica de negócio para processamento de dados e predições.
+- **Documentação**: Documentação do projeto utilizando MkDocs.
+
+## Como Usar
+
+Para obter instruções detalhadas sobre como configurar e utilizar este projeto, consulte as seções de documentação apropriadas.
