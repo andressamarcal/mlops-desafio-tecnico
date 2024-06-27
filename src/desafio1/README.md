@@ -218,6 +218,8 @@ Relatório de Classificação:
 weighted avg       0.94      0.93      0.93        30
 ```
 
+As métricas acima, indicam que o KNN tem uma alta precisão e recall, especialmente para as classes 0 e 1, mostrando um bom equilíbrio entre os diferentes tipos de erro (falsos positivos e falsos negativos). Com isso, o KNN se mostrou mais eficiente para este problema específico do que os outros modelos testados. =D
+
 <!-- ## Boas Práticas e Padrões de Projeto -->
 <!--  -->
 <!-- <!-- Este projeto segue as melhores práticas de desenvolvimento de software e padrões de projeto, incluindo: --> -->
