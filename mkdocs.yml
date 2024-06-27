@@ -9,14 +9,16 @@ copyright: Maintained by <a href="https://andressamarcal.com">Florian</a>.
 
 nav:
   - Home: index.md
-  - API: api.md
-  - Código:
-      - Models: models.md
-      - Schemas: schemas.md
-      - Data Service: data_service.md
-      - Prediction Service: prediction_service.md
-      - Main: main.md
-      - Iris Router: iris_router.md
+  - API:
+      - Config: api/config.md
+      - Data Ingestion: api/data_ingestion.md
+      - Data Service: api/services/data_service.md
+      - Prediction Service: api/services/prediction_service.md
+      - Main: api/v1/main.md
+      - Iris Router: api/v1/routers/iris_router.md
+  - Models:
+      - ML: api/v1/models/ml/iris_train.md
+      - Schemas: api/v1/models/schemas/iris_schema.md
   - Modules: modules.md
 
 plugins:
@@ -32,8 +34,8 @@ plugins:
 
 theme:
   name: material
-  features:
-    - tabs
+  feature:
+    tabs: true
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -60,5 +62,7 @@ extra:
       link: https://pypi.org/project/mlops-desafio-tecnico
 
 markdown_extensions:
-  - toc
-  - pymdownx.arithmatex
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
