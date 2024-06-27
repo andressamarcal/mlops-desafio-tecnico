@@ -129,10 +129,10 @@ Execute o ambiente virtual:
 **Avaliação da Eficiência do Projeto**
 Alguns algoritmos e tecnicas foram avaliados e testados no processo de modelagem:
 
-- Decision Tree: Nao foi escolhido.
-- Neigbhood: Nao foi escolhido.
-- Logistic Regression: Nao foi escolhido.
-- KNN: Modelo escolhido
+- Decision Tree (DT): Nao foi escolhido.
+- Naive Bayes (NB): Nao foi escolhido.
+- Logistic Regression (LR): Nao foi escolhido.
+- Naive Bayes (NB): Modelo escolhido
 
 ## Métricas de Avaliação do Modelo
 
