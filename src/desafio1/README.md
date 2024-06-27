@@ -43,26 +43,38 @@ Para rodar este projeto, você precisará ter na sua maquina:
 - Docker
 - Poetry
 
-# TESTANDO O PROJETO DESAFIO1 DA MANEIRA RAPIDA E FACIL
+---
 
-### Instalação e Execução
+## TESTANDO O PROJETO DESAFIO1 DA MANEIRA RAPIDA E FACIL
 
-## Forma fácil e mais simples
+## Instalação e Execução
 
-- Clone o repositorio
-- Após garantir que esteja com o **Python 3.11, Docker e Poetry** instalados;
-- Garanta que voce esteja no diretorio RAIZ do projeto: Rode o comando `$pwd` para validar essa etapa.
+**Forma fácil e mais simples**
+
+1. Clone o repositorio
+2. Após garantir que esteja com o **Python 3.11, Docker e Poetry** instalados;
+3. Garanta que voce esteja no diretorio RAIZ do projeto: Rode o comando `$pwd` para validar essa etapa.
+
 - `poetry shell`
 - `poetry install`
-- Após ter o python instalado, e o ambiente poetry de pé com as dependencias instaladas
-- Rode o comando: `make train` para treinar o modelo com algoritmo KNN,a pós garantir a completude do treino...
-- Rode o comando: `make api` para subir a api em localhost
-- Recomendo abrir a api em uma aba do terminal, e em outra aba enviar a requisição para testar a saída do seu endpoint
 
-  - **Exemplo de requisições(devem ir 4 parametros na requição post):**
-    - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=5.1 sepal_width:=3.5 petal_length:=1.4 petal_width:=0.2
-    - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=6.3 sepal_width:=2.8 petal_length:=5.1 petal_width:=1.5
-    - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=7.2 sepal_width:=3.6 petal_length:=6.1 petal_width:=2.5
+4. Após ter o python instalado, e o ambiente poetry de pé com as dependencias instaladas
+
+- Rode o comando: `make train` para treinar o modelo com algoritmo KNN,a pós garantir a completude do treino...
+
+5. Rode o comando: `make api` para subir a api em localhost
+6. Recomendo abrir a api em uma aba do terminal, e em outra aba enviar a requisição para testar a saída do seu endpoint
+
+- **Exemplo de requisições(devem ir 4 parametros na requição post):**
+  - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=5.1 sepal_width:=3.5 petal_length:=1.4 petal_width:=0.2
+  - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=6.3 sepal_width:=2.8 petal_length:=5.1 petal_width:=1.5
+  - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=7.2 sepal_width:=3.6 petal_length:=6.1 petal_width:=2.5
+
+---
+
+## Instalação e Execução
+
+**Utilizando DOcker**
 
 1. **Clonar o Repositório**
 
