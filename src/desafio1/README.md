@@ -241,6 +241,4 @@ Para esse projeto foi escolhida a **Arquitetura em Camadas**:
 Este projeto exemplifica como aplicar boas práticas de engenharia de software na construção
 de uma API robusta, escalável e facilmente mantível para a classificação de flores de Íris. A
 escolha de FastAPI, Poetry, e Docker foi direcionada para facilitar o desenvolvimento, o
-teste e a distribuição da aplicação, garantindo
-
-uma implantação eficaz e eficiente.
+teste e a distribuição da aplicação, garantindo uma implantação eficaz e eficiente. :)
