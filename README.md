@@ -32,43 +32,4 @@ Dentro do projeto, você encontrará as resoluções nos seguintes caminhos:
 
 ```
 
-.
-├── Dockerfile
-├── LICENSE
-├── Makefile
-├── mkdocs.yml
-├── mlops_desafio_tecnico
-│   ├── api
-│   │   ├── v1  # Versionamento da API
-│   │   │   ├── __init__.py
-│   │   │   ├── main.py  # Ponto de entrada da aplicação FastAPI para a versão 1
-│   │   │   ├── dependencies.py  # Gerenciamento de dependências da API
-│   │   │   ├── routers  # Roteadores FastAPI
-│   │   │       ├── __init__.py
-│   │   │       └── iris_router.py  # Roteador para as previsões de íris
-│   │   ├── common  # Componentes comuns entre diferentes versões
-│   │   │   ├── __init__.py
-│   │   │   ├── models.py  # Modelos de dados Pydantic
-│   │   │   └── schemas.py  # Schemas para validação de dados
-│   │   ├── auth  # Autenticação e autorização
-│   │   │   ├── __init__.py
-│   │   │   └── auth_handler.py  # Manipulação de autenticação JWT
-│   │   └── services  # Serviços de negócio
-│   │       ├── __init__.py
-│   │       ├── prediction_service.py  # Serviços de predição
-│   │       └── data_service.py  # Serviços para manipulação de dados
-│   ├── tests  # Testes
-│   │   ├── __init__.py
-│   │   └── test_iris_router.py
-│   └── __init__.py
-├── poetry.lock
-├── pyproject.toml
-├── README.md
-├── docs  # Documentação MkDocs
-│   ├── index.md
-│   └── modules.md
-└── .github  # Configuração CI/CD
-    └── workflows
-        └── ci.yml
-
 ```
