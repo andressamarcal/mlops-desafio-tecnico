@@ -33,7 +33,7 @@ jobs:
 
       - name: Run linter (flake8)
         run: |
-          flake8 src tests
+          flake8 src/desafio1/api src/desafio1/models src/desafio1/tests
 
       - name: Run black
         run: |
