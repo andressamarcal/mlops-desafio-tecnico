@@ -10,7 +10,7 @@ Dentro do projeto, você encontrará as resoluções nos seguintes caminhos:
 
 `mlops-desafio-tecnico/src/desafio2`: **Solução para o desafio2 do case técnico.**
 
-## TESTANDO O PROJETO DESAFIO1 DA MANEIRA RAPIDA E FACIL
+## TESTANDO O PROJETO DESAFIO1 VIA POETRY
 
 ## Instalação e Execução
 
