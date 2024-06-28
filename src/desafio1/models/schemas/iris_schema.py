@@ -19,9 +19,7 @@ class Iris(BaseModel):
     sepal_width: float
     petal_length: float
     petal_width: float
-    species: Optional[str] = (
-        None  # Param opcional, pois pode não ser necessário para previsão
-    )
+    species: Optional[str] = None  # Param opcional, pois pode não ser necessário para previsão
 
 
 class IrisPredictionResponse(BaseModel):
