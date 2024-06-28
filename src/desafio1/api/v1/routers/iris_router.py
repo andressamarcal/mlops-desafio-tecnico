@@ -64,7 +64,9 @@ def get_model(request: Request) -> Pipeline:
     response_model=IrisPredictionResponse,
     description="Obtenha uma classificação para flores de Íris",
 )
-async def get_prediction(request: IrisPredictionRequest, req: Request) -> IrisPredictionResponse:
+async def get_prediction(
+    request: IrisPredictionRequest, req: Request
+) -> IrisPredictionResponse:
     """Endpoint para obter previsões das espécies de flores Íris a partir das características da flor.
 
     Args:
@@ -93,7 +95,9 @@ async def get_prediction(request: IrisPredictionRequest, req: Request) -> IrisPr
         prediction = model.predict(data)[0]
         class_name = class_mapping[prediction]
         probability = max(model.predict_proba(data)[0])
-        return IrisPredictionResponse(prediction=prediction, class_name=class_name, probability=probability)
+        return IrisPredictionResponse(
+            prediction=prediction, class_name=class_name, probability=probability
+        )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=f"Erro de valor: {e}") from e
     except Exception as e:

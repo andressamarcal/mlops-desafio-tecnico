@@ -53,7 +53,9 @@ class IrisModelTrainer:
         """
         return datasets.load_iris(return_X_y=True)
 
-    def split_data(self, X: ndarray, y: ndarray) -> Tuple[ndarray, ndarray, ndarray, ndarray]:
+    def split_data(
+        self, X: ndarray, y: ndarray
+    ) -> Tuple[ndarray, ndarray, ndarray, ndarray]:
         """
         Divide os dados em conjuntos de treinamento e teste com estratificação.
 
@@ -64,10 +66,14 @@ class IrisModelTrainer:
         Returns:
             Tuple[ndarray, ndarray, ndarray, ndarray]: Conjuntos de dados divididos em treinamento e teste.
         """
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42, stratify=y
+        )
         return X_train, X_test, y_train, y_test
 
-    def balance_data(self, X_train: ndarray, y_train: ndarray) -> Tuple[ndarray, ndarray]:
+    def balance_data(
+        self, X_train: ndarray, y_train: ndarray
+    ) -> Tuple[ndarray, ndarray]:
         """
         Aplica o oversampling nas classes minoritárias para balancear os dados de treinamento.
 
@@ -82,7 +88,9 @@ class IrisModelTrainer:
         X_train_balanced, y_train_balanced = smote.fit_resample(X_train, y_train)
         return X_train_balanced, y_train_balanced
 
-    def plot_distribution(self, y_train: ndarray, y_test: ndarray, plot_path: str) -> None:
+    def plot_distribution(
+        self, y_train: ndarray, y_test: ndarray, plot_path: str
+    ) -> None:
         """
         Plota a distribuição das classes nos conjuntos de treinamento e teste.
 
@@ -135,7 +143,9 @@ class IrisModelTrainer:
         plt.savefig(os.path.join(plot_path, "model_metrics.png"))
         plt.close()
 
-    def plot_confusion_matrix(self, y_test: ndarray, y_pred: ndarray, plot_path: str) -> None:
+    def plot_confusion_matrix(
+        self, y_test: ndarray, y_pred: ndarray, plot_path: str
+    ) -> None:
         """
         Plota a matriz de confusão e salva o gráfico.
 
@@ -220,7 +230,9 @@ class IrisModelTrainer:
         plt.savefig(os.path.join(plot_path, "dataset_info.png"))
         plt.close()
 
-    def plot_learning_curve(self, model: Pipeline, X: ndarray, y: ndarray, plot_path: str) -> None:
+    def plot_learning_curve(
+        self, model: Pipeline, X: ndarray, y: ndarray, plot_path: str
+    ) -> None:
         """
         Plota a curva de aprendizado do modelo.
 
@@ -259,7 +271,9 @@ class IrisModelTrainer:
             alpha=0.1,
             color="g",
         )
-        plt.plot(train_sizes, train_scores_mean, "o-", color="r", label="Training score")
+        plt.plot(
+            train_sizes, train_scores_mean, "o-", color="r", label="Training score"
+        )
         plt.plot(
             train_sizes,
             test_scores_mean,
@@ -272,7 +286,9 @@ class IrisModelTrainer:
         plt.savefig(os.path.join(plot_path, "learning_curve.png"))
         plt.close()
 
-    def evaluate_model(self, model: Pipeline, X_test: ndarray, y_test: ndarray, plot_path: str) -> None:
+    def evaluate_model(
+        self, model: Pipeline, X_test: ndarray, y_test: ndarray, plot_path: str
+    ) -> None:
         """
         Avalia o modelo usando as métricas precisão, recall e f1-score.
 
@@ -323,7 +339,9 @@ class IrisModelTrainer:
         print("Desvio padrão da acurácia:", scores.std())
 
         plt.figure(figsize=(10, 6))
-        plt.plot(range(1, len(scores) + 1), scores, marker="o", linestyle="-", color="blue")
+        plt.plot(
+            range(1, len(scores) + 1), scores, marker="o", linestyle="-", color="blue"
+        )
         plt.title("Cross Validation Scores")
         plt.xlabel("Fold")
         plt.ylabel("Accuracy")
