@@ -71,23 +71,6 @@ class IrisModelTrainer:
         )
         return X_train, X_test, y_train, y_test
 
-    def balance_data(
-        self, X_train: ndarray, y_train: ndarray
-    ) -> Tuple[ndarray, ndarray]:
-        """
-        Aplica o oversampling nas classes minoritárias para balancear os dados de treinamento.
-
-        Args:
-            X_train (ndarray): Atributos de treinamento.
-            y_train (ndarray): Alvos de treinamento.
-
-        Returns:
-            Tuple[ndarray, ndarray]: Dados de treinamento balanceados.
-        """
-        smote = SMOTE(random_state=42)
-        X_train_balanced, y_train_balanced = smote.fit_resample(X_train, y_train)
-        return X_train_balanced, y_train_balanced
-
     def plot_distribution(
         self, y_train: ndarray, y_test: ndarray, plot_path: str
     ) -> None:
@@ -386,12 +369,10 @@ class IrisModelTrainer:
             self.plot_distribution(y_train, y_test, plot_path)
             pbar.update(steps)
 
-            X_train_balanced, y_train_balanced = self.balance_data(X_train, y_train)
-            self.cross_validate_model(X_train_balanced, y_train_balanced, plot_path)
+            self.cross_validate_model(X_train, y_train, plot_path)
+            model = self.train_model(X_train, y_train)
             pbar.update(steps)
-
-            model = self.train_model(X_train_balanced, y_train_balanced)
-            pbar.update(steps)
+            
             self.evaluate_model(model, X_test, y_test, plot_path)
             pbar.update(steps)
 
