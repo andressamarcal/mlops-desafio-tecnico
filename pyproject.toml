@@ -20,6 +20,7 @@ seaborn = "^0.12.2"
 tqdm = "^4.64.1"
 imblearn = "^0.0"
 
+pandas = "^2.2.2"
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
 pytest-cov = "^4.0.0"
