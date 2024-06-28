@@ -41,11 +41,11 @@ jobs:
 
       - name: Run mypy
         run: |
-          mypy src
+          mypy src/desafio1/api src/desafio1/models src/desafio1/tests
 
       - name: Run tests with coverage
         run: |
-          pytest --cov=src --cov-fail-under=70
+          pytest --cov=src/desafio1/tests --cov-fail-under=70
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
