@@ -20,5 +20,5 @@ ENV PYTHONPATH /app
 # porta para a aplicação
 EXPOSE 8000
 
-# Comando padrão para rodar a API
-CMD ["poetry", "run", "uvicorn", "src.desafio1.api.v1.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Comandos
+CMD ["make", "poetry", "run", "uvicorn", "src.desafio1.api.v1.main:app", "--host", "0.0.0.0", "--port", "8000"]
