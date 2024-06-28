@@ -7,13 +7,16 @@ RUN apt-get update && \
     apt-get install -y curl build-essential python3-dev gcc g++ make && \
     apt-get clean
 
-RUN pip install --upgrade pip
+# Atualizar pip e instalar setuptools
+RUN pip install --upgrade pip setuptools
 
 WORKDIR /app
 
+# Copie e instale as dependências do requirements.txt
 COPY ./requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copie o restante do código da aplicação para o contêiner
 COPY . /app
 
 ENV PYTHONPATH /app

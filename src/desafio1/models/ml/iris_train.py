@@ -7,7 +7,6 @@ from typing import Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from imblearn.over_sampling import SMOTE
 from numpy import ndarray
 from sklearn import datasets
 from sklearn.metrics import (
