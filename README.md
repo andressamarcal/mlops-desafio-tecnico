@@ -35,14 +35,11 @@ Dentro do projeto, você encontrará as resoluções nos seguintes caminhos:
 - **Exemplo de requisições(devem ir 4 parametros na requição post):**
 
 ```bash
-  - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=5.1 sepal_width:=3.5 petal_length:=1.4
-petal_width:=0.2
+  - http POST http://127.0.0.1:8000/v1/iris/predict sepal_length:=5.1 sepal_width:=3.5 petal_length:=1.4 petal_width:=0.2
 
-  - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=6.3 sepal_width:=2.8 petal_length:=5.1
-petal_width:=1.5
+  - http POST http://127.0.0.1:8000/v1/iris/predict sepal_length:=6.3 sepal_width:=2.8 petal_length:=5.1 petal_width:=1.5
 
-  - http POST <http://127.0.0.1:8000/iris/predict> sepal_length:=7.2 sepal_width:=3.6 petal_length:=6.1
-petal_width:=2.5
+  - http POST http://127.0.0.1:8000/v1/iris/predict sepal_length:=7.2 sepal_width:=3.6 petal_length:=6.1 petal_width:=2.5
 ```
 
 ---
