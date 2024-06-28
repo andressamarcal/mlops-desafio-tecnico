@@ -1,4 +1,4 @@
-from api.v1.main import app
+from desafio1.api.v1.main import app
 from fastapi.testclient import TestClient
 
 client = TestClient(app)
