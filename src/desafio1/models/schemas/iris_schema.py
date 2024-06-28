@@ -11,7 +11,8 @@ class Iris(BaseModel):
         sepal_width (float): Largura da sépala.
         petal_length (float): Comprimento da pétala.
         petal_width (float): Largura da pétala.
-        species (str, optional): Espécie da flor. Pode ser uma de três possíveis: Iris-setosa, Iris-versicolor, Iris-virginica.
+        species (str, optional): Espécie da flor. Pode ser uma de três possíveis:
+                                Iris-setosa, Iris-versicolor, Iris-virginica.
     """
 
     sepal_length: float
