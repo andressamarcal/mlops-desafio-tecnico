@@ -21,7 +21,9 @@ def get_latest_model_path(models_dir: str) -> str:
     Returns:
         str: Caminho do arquivo de modelo mais recente.
     """
-    model_files = glob.glob(os.path.join(models_dir, "iris_knn_v1_*.pkl"))  # Mudança para .pkl
+    model_files = glob.glob(
+        os.path.join(models_dir, "iris_knn_v1_*.pkl")
+    )  # Mudança para .pkl
     if not model_files:
         raise ModelNotFoundError()
     latest_model = max(model_files, key=os.path.getctime)
@@ -64,13 +66,19 @@ async def startup_event() -> None:
         print(f"Modelo carregado com sucesso: {model_path}")
     except ModelNotFoundError as e:
         print(str(e))
-        raise HTTPException(status_code=500, detail="Falha ao carregar o modelo no startup.") from e
+        raise HTTPException(
+            status_code=500, detail="Falha ao carregar o modelo no startup."
+        ) from e
     except ConnectionError as e:
         print(str(e))
-        raise HTTPException(status_code=500, detail="Falha ao carregar o dataset Iris no startup.") from e
+        raise HTTPException(
+            status_code=500, detail="Falha ao carregar o dataset Iris no startup."
+        ) from e
     except Exception as e:
         print(str(e))
-        raise HTTPException(status_code=500, detail="Erro inesperado ao iniciar a aplicação.") from e
+        raise HTTPException(
+            status_code=500, detail="Erro inesperado ao iniciar a aplicação."
+        ) from e
 
 
 @app.on_event("shutdown")

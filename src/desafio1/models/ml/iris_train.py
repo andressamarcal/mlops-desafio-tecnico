@@ -20,7 +20,12 @@ from sklearn.metrics import (
     recall_score,
     roc_curve,
 )
-from sklearn.model_selection import StratifiedKFold, cross_val_score, learning_curve, train_test_split
+from sklearn.model_selection import (
+    StratifiedKFold,
+    cross_val_score,
+    learning_curve,
+    train_test_split,
+)
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -48,7 +53,9 @@ class IrisModelTrainer:
         """
         return datasets.load_iris(return_X_y=True)
 
-    def split_data(self, X: ndarray, y: ndarray) -> Tuple[ndarray, ndarray, ndarray, ndarray]:
+    def split_data(
+        self, X: ndarray, y: ndarray
+    ) -> Tuple[ndarray, ndarray, ndarray, ndarray]:
         """
         Divide os dados em conjuntos de treinamento e teste com estratificação.
 
@@ -59,10 +66,14 @@ class IrisModelTrainer:
         Returns:
             Tuple[ndarray, ndarray, ndarray, ndarray]: Conjuntos de dados divididos em treinamento e teste.
         """
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42, stratify=y
+        )
         return X_train, X_test, y_train, y_test
 
-    def balance_data(self, X_train: ndarray, y_train: ndarray) -> Tuple[ndarray, ndarray]:
+    def balance_data(
+        self, X_train: ndarray, y_train: ndarray
+    ) -> Tuple[ndarray, ndarray]:
         """
         Aplica o oversampling nas classes minoritárias para balancear os dados de treinamento.
 
@@ -77,7 +88,9 @@ class IrisModelTrainer:
         X_train_balanced, y_train_balanced = smote.fit_resample(X_train, y_train)
         return X_train_balanced, y_train_balanced
 
-    def plot_distribution(self, y_train: ndarray, y_test: ndarray, plot_path: str) -> None:
+    def plot_distribution(
+        self, y_train: ndarray, y_test: ndarray, plot_path: str
+    ) -> None:
         """
         Plota a distribuição das classes nos conjuntos de treinamento e teste.
 
@@ -130,7 +143,9 @@ class IrisModelTrainer:
         plt.savefig(os.path.join(plot_path, "model_metrics.png"))
         plt.close()
 
-    def plot_confusion_matrix(self, y_test: ndarray, y_pred: ndarray, plot_path: str) -> None:
+    def plot_confusion_matrix(
+        self, y_test: ndarray, y_pred: ndarray, plot_path: str
+    ) -> None:
         """
         Plota a matriz de confusão e salva o gráfico.
 
@@ -141,7 +156,14 @@ class IrisModelTrainer:
         """
         cm = confusion_matrix(y_test, y_pred)
         plt.figure(figsize=(8, 6))
-        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
+        sns.heatmap(
+            cm,
+            annot=True,
+            fmt="d",
+            cmap="Blues",
+            xticklabels=np.unique(y_test),
+            yticklabels=np.unique(y_test),
+        )
         plt.xlabel("Predicted")
         plt.ylabel("True")
         plt.title("Confusion Matrix")
@@ -167,7 +189,11 @@ class IrisModelTrainer:
 
         plt.figure(figsize=(8, 6))
         for i in range(len(np.unique(y_test))):
-            plt.plot(fpr[i], tpr[i], label=f"ROC curve (area = {roc_auc[i]:.2f}) for label {i}")
+            plt.plot(
+                fpr[i],
+                tpr[i],
+                label=f"ROC curve (area = {roc_auc[i]:.2f}) for label {i}",
+            )
         plt.plot([0, 1], [0, 1], color="navy", lw=2, linestyle="--")
         plt.xlim([0.0, 1.0])
         plt.ylim([0.0, 1.05])
@@ -188,7 +214,12 @@ class IrisModelTrainer:
         """
         fig, ax = plt.subplots(2, 2, figsize=(12, 10))
 
-        feature_names = ["Comprimento Sépala", "Largura Sépala", "Comprimento Pétala", "Largura Pétala"]
+        feature_names = [
+            "Comprimento Sépala",
+            "Largura Sépala",
+            "Comprimento Pétala",
+            "Largura Pétala",
+        ]
         for i in range(4):
             ax[i // 2, i % 2].hist(X[:, i], bins=20, color="blue", alpha=0.7)
             ax[i // 2, i % 2].set_title(f"Distribuição de {feature_names[i]}")
@@ -199,7 +230,9 @@ class IrisModelTrainer:
         plt.savefig(os.path.join(plot_path, "dataset_info.png"))
         plt.close()
 
-    def plot_learning_curve(self, model: Pipeline, X: ndarray, y: ndarray, plot_path: str) -> None:
+    def plot_learning_curve(
+        self, model: Pipeline, X: ndarray, y: ndarray, plot_path: str
+    ) -> None:
         """
         Plota a curva de aprendizado do modelo.
 
@@ -238,14 +271,24 @@ class IrisModelTrainer:
             alpha=0.1,
             color="g",
         )
-        plt.plot(train_sizes, train_scores_mean, "o-", color="r", label="Training score")
-        plt.plot(train_sizes, test_scores_mean, "o-", color="g", label="Cross-validation score")
+        plt.plot(
+            train_sizes, train_scores_mean, "o-", color="r", label="Training score"
+        )
+        plt.plot(
+            train_sizes,
+            test_scores_mean,
+            "o-",
+            color="g",
+            label="Cross-validation score",
+        )
 
         plt.legend(loc="best")
         plt.savefig(os.path.join(plot_path, "learning_curve.png"))
         plt.close()
 
-    def evaluate_model(self, model: Pipeline, X_test: ndarray, y_test: ndarray, plot_path: str) -> None:
+    def evaluate_model(
+        self, model: Pipeline, X_test: ndarray, y_test: ndarray, plot_path: str
+    ) -> None:
         """
         Avalia o modelo usando as métricas precisão, recall e f1-score.
 
@@ -296,7 +339,9 @@ class IrisModelTrainer:
         print("Desvio padrão da acurácia:", scores.std())
 
         plt.figure(figsize=(10, 6))
-        plt.plot(range(1, len(scores) + 1), scores, marker="o", linestyle="-", color="blue")
+        plt.plot(
+            range(1, len(scores) + 1), scores, marker="o", linestyle="-", color="blue"
+        )
         plt.title("Cross Validation Scores")
         plt.xlabel("Fold")
         plt.ylabel("Accuracy")
